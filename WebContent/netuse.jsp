@@ -60,7 +60,7 @@
 	 			 interval=setInterval(EconfigAPI('DataList.action',500,"main1"),500);
 	  		} */
 	  		$(function () {  
-	            setInterval("EconfigAPI('DataList.action',5000,'main1')", 5000); //每隔5秒刷新点击量  
+	            setInterval("EconfigAPI('DataList.action',50000,'main1')", 50000); //每隔5秒刷新点击量  
 	        }); 
     	    EconfigAPI(url,time,elem);  
     	    //run();
@@ -79,8 +79,13 @@
  function EconfigAPI(url,time,elem){ 
 	 
 	$.ajaxSettings.async = false;  //同步才能获取数据  
-	$.post(url,{time:time},function(result) {  
-		dateList=result.dateList;
+	var obj=new Array(2);
+	$.post(url,{time:time},function(JsonString) {  
+		obj=JsonString.source;
+		//obj= $.parseJSON(JsonString.source);
+		//alert(obj[0]);
+		//alert(obj[0].source_id);
+		//dateList=result.dateList;
 		
 		/* totalListc = response.totalListc;  
         totalListd = response.totalListd;  
@@ -108,7 +113,7 @@
                     trigger: 'axis'
                 },
                 legend: {
-                    data:['360','QQ']
+                    data:['In','Out']
                 },
                 toolbox: {
                     show : true,
@@ -135,18 +140,30 @@
                 ],
                 series : [
                     {
-                        name:'360',
+                        name:'In',
                         type:'line',
                         stack: '总量',
                         itemStyle: {normal: {areaStyle: {type: 'default'}}},
-                        data:[120, 132, 101, 134, 90, 230, 210]
+                        data:[obj[6].source_in,
+                              obj[5].source_in,
+                              obj[4].source_in,
+                              obj[3].source_in,
+                              obj[2].source_in,
+                              obj[1].source_in,
+                              obj[0].source_in]
                     },
                     {
-                        name:'QQ',
+                        name:'Out',
                         type:'line',
                         stack: '总量',
                         itemStyle: {normal: {areaStyle: {type: 'default'}}},
-                        data:[( Math.random()+1)*20, ( Math.random()+1)*32, ( Math.random()+1)*11, ( Math.random()+1)*34, ( Math.random()+1)*90,( Math.random()+1)* 20, ( Math.random()+1)*36]
+                        data:[obj[6].source_out,
+                              obj[5].source_out,
+                              obj[4].source_out,
+                              obj[3].source_out,
+                              obj[2].source_out,
+                              obj[1].source_out,
+                              obj[0].source_out]
                     }
                     
                 ]  
